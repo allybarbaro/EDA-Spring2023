@@ -69,13 +69,13 @@ library(dplyr)
 library(ggplot2)
 
 # Some packages are umbrellas under which other packages are loaded
-#install.packages("tidyverse")
+install.packages("tidyverse")
 library(tidyverse)
 ```
 
 Question: What happens in the console when you load a package?
 
-> Answer: 
+> Answer: The output of your package will show on your console.
 
 ### Import your datasets
 
@@ -114,7 +114,7 @@ USGS.flow.data <- read.csv("./Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAs
 ## EXPLORE YOUR DATASET
 
 Take a moment to read through the README file associated with the USGS dataset on discharge at the Eno River. Where can you find this file? How does the placement and information found in this file relate to the best practices for reproducible data analysis?
-> ANSWER: 
+> ANSWER: It is the Raw folder, which is within the data folder. 
 
 ```{r Exploring data}
 View(USGS.flow.data)
@@ -149,7 +149,7 @@ summary(USGS.flow.data)  #could point to column only with $
 ```
 
 What happened to blank cells in the spreadsheet when they were imported into R?
-> Answer: 
+> Answer: It became labeled with NA.
 
 ## Adjusting Datasets
 
@@ -163,7 +163,7 @@ summary(USGS.flow.data$gage.height.mean)
 ```
 Question: What types of research questions might make it favorable to remove NAs from a dataset, and what types of research questions might make it favorable to retain NAs in the dataset?
 
-> Answer: 
+> Answer: When using time series data, if the NAs are towards the beginning of the series, you can remove the NAs. 
 
 ```{r Removing NAs}
 USGS.flow.data.complete <- na.omit(USGS.flow.data)
