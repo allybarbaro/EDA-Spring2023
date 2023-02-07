@@ -96,7 +96,7 @@ ggplot(USGS.flow.data) +
 
 An alternate to a histogram is a frequency polygon graph (distributions of values for continuous numerical variables). Instead of displaying bars,  counts of continuous variables are displayed as lines. This is advantageous if you want to display multiple variables or categories of variables at once.
 
-```{r, fig.height = 3, fig.width = 4}
+```{r hisotgram, fig.height = 3, fig.width = 4}
 #
 ggplot(USGS.flow.data) +
   geom_freqpoly(aes(x = gage.height.mean), bins = 50) +
@@ -148,8 +148,7 @@ ggplot(USGS.flow.data) +
   geom_point(aes(x = discharge.mean, y = gage.height.mean))
 
 ggplot(USGS.flow.data) +
-  geom_point(aes(x = datetime, y = discharge.mean))
-```
+  geom_point(aes(x = datetime, y = discharge.mean))```
 
 Question: under what circumstances would it be beneficial to use each of these graph types (bar plot, histogram, frequency polygon, box-and whisker, violin, scatterplot)?
 
@@ -168,6 +167,6 @@ How can multiple options for data exploration inform our understanding of our da
 
 Do you see any patterns in the USGS data for the Eno River? What might be responsible for those patterns and/or relationships?
 
-> Answer: 
+> Answer: most of the mean discharges are between 0 and 100. 
 
 
