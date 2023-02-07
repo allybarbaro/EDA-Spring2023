@@ -153,17 +153,17 @@ ggplot(USGS.flow.data) +
 
 Question: under what circumstances would it be beneficial to use each of these graph types (bar plot, histogram, frequency polygon, box-and whisker, violin, scatterplot)?
 
-> Answer: 
+> Answer: It depends on what you are looking to learn from the visualization of your data. 
 
 ## Ending discussion
 
 What did you learn about the USGS discharge dataset today? What separate insights did the different graph types offer?
-> Answer: 
+> Answer: It has a large variability, a lot of NA or no data, and can be represented in many different ways. 
 
 
 How can multiple options for data exploration inform our understanding of our data?
 
-> Answer: 
+> Answer: The ability to plot different variables against each other, or observe one variable in different ways can provide many different insights into the distribution of our data.
 
 
 Do you see any patterns in the USGS data for the Eno River? What might be responsible for those patterns and/or relationships?
