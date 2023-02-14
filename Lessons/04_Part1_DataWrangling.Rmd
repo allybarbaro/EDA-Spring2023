@@ -109,17 +109,18 @@ NTL.phys.data.JunethruOctober4 <- filter(NTL.phys.data, daynum %in% c(152:304))
 
 # Exercise: 
 # filter NTL.phys.data for the year 1999
+NTL.phys.data.year99 <- filter(NTL.phys.data, year4 %in% c(1999))
 # what code do you need to use, based on the class of the variable?
 class(NTL.phys.data$year4)
 
 # Exercise: 
 # filter NTL.phys.data for Tuesday Lake from 1990 through 1999.
-
+NTL.phys.data.year90s <- filter(NTL.phys.data, year4 %in% c(1990:1999))
 
 ```
 Question: Why don't we filter using row numbers?
 
-> Answer: 
+> Answer: idk
 
 ### Arrange
 
@@ -131,7 +132,9 @@ NTL.phys.data.depth.descending <- arrange(NTL.phys.data, desc(depth))
 
 # Exercise: 
 # Arrange NTL.phys.data by temperature, in descending order. 
+NTL.phys.data.temp.descending <- arrange(NTL.phys.data, desc(temperature_C))
 # Which dates, lakes, and depths have the highest temperatures?
+#dates in June and July, small depths (range 0 - 1), and East Long Lake and Hummingbird Lake.
 
 
 ```
