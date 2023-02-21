@@ -47,7 +47,8 @@ ggplot(data=data.frame(x=0,y=0))+
     x=0,
     y=0.025,
     label=expression(paste("Mean is ", mu,",", R^{2},'=0.6'))
-    )
+    ) #paste brings together strings. Paste Zero does not insert spaces, while Paste does.
+#expression command - MathJax. It's a little like markdown but different. It's a way of making mathematical formulas. This command says this is a mathematical expression, not just text.
 
 #Print the plot
 print(Plot_text)
@@ -60,7 +61,7 @@ ggsave(
   width = 6, 
   units = "in", 
   dpi = 300
-  )
+  ) #it creates the folder if you don't already have one (so in this case it created the Output folder)
 
 ```
 
@@ -77,6 +78,7 @@ processed_data = "Data/Processed_KEY"
 PeterPaul.chem.nutrients <- read.csv(
   here(processed_data,"NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv"),
   stringsAsFactors = TRUE)
+#if you're having trouble with your code going over on your knit doc, just hit enter after the comma and it will bump it down to the next line.
 
 EPAair <- read.csv(
   here(processed_data,"EPAair_O3_PM25_NC1819_Processed.csv"), 
@@ -93,18 +95,50 @@ Say we want to plot the number of records each month in the Peter/Paul lakes dat
 
 ```{r Plot the number of records by month}
 #What kind of values are months?
+class(PeterPaul.chem.nutrients$month) #could also use glimpse command
 
 #List unique values
+unique(PeterPaul.chem.nutrients$month)
 
 #Plot how many Lake observations occur each month
+ggplot(PeterPaul.chem.nutrients,
+       aes(x=month)) +
+  geom_histogram(bins=12)
 
 #Convert month to a factor -- with 12 levels, labelled with month names
+factor(PeterPaul.chem.nutrients$month,
+       levels = 1:12,
+       labels = month.abb)
 
 #Try again: Plot how many Lake observations occur each month
+ggplot(PeterPaul.chem.nutrients,
+       aes(x= factor(month, levels=1:12, labels=month.abb))) +
+  geom_bar() +
+  scale_x_discrete(drop=FALSE) +
+  labs(
+    title = "My Plot",
+    x = "Month")
+
+#this part is helpful for the assignment!!!!!! Scale x discrete is telling the code you want to see all month factor values, even ones that don't have any data records.
 
 #Alter to include missing months
 
+
 #Tidy up the code
+the_plot <- PeterPaul.chem.nutrients %>%
+  ggplot(
+    aes(x = factor(
+      month,
+      levels = 1:12,
+      labels = month.abb)
+    )
+  ) +
+  geom_bar() +
+  scale_x_discrete(
+    name = "Month",
+    title = "My Plot"
+  )
+ #finalized code for this part is in John's powerpoint
 
 ```
 
@@ -225,7 +259,19 @@ Exercise: build your own scatterplots of PeterPaul.chem.nutrients
 ```{r, fig.height = 3, fig.width = 4, warning = FALSE}
 
 # 1. 
-# Plot surface temperatures by day of  year. 
+# Plot surface temperatures by day of  year. #temp on y, daynum on x axis
+  daynum.temp.plot <- PeterPaul.chem.nutrients %>%
+  filter(depth == 0) %>%
+  ggplot(aes(x = daynum, y = temperature_C, color = year4)) +
+  geom_point(size=0.5, alpha=0.5) +
+  facet_wrap(vars(lakename), ncol = 2) +
+  labs(title = "Surface Temperature vs Day of Year by Year",
+       x ="Day of Year", 
+       y = "Surface Temperature C",
+       color = "Year")
+
+print(daynum.temp.plot)
+#alpha sets the transparency of your dots/lines/etc
 # Color your points by year, and facet by lake in two rows.
 # Change the ylab name
 
