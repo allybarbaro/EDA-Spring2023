@@ -46,10 +46,31 @@ Create three plots, each with appropriately formatted axes and legends. Choose a
 2. geom_boxplot of ozone divided by year. Add letters representing a significant difference between 2018 and 2019 (hint: stat_summary). 
 3. geom_violin of ozone divided by year, with the 0.5 quantile marked as a horizontal line. Add letters representing a significant difference between 2018 and 2019. 
 
-```{r}
+```{r visualization}
 #Exercise 1:
+ozone.dens.plot <- ggplot(EPAair, aes(x = Ozone, fill = as.factor(Year))) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c('darkgreen', 'darkblue')) +
+  labs(x = 'Ozone AQI Values', y = 'Density', fill = '')
+  
+print(ozone.dens.plot)
 
+#2.
+ozone.box.plot <- ggplot(EPAair, aes(x = as.factor(Year), y = Ozone)) +
+  geom_boxplot() +
+  stat_summary(geom = "text", fun = max, vjust = -1, size = 4, label = c("b", "a")) +
+  labs(y = 'Ozone AQI Values')
+  
+print(ozone.box.plot)
 
+#3
+ozone.violin.plot <- ggplot(EPAair, aes(x = as.factor(Year), y = Ozone)) +
+  geom_violin(draw_quantiles = 0.5) +
+  stat_summary(geom = "text", fun = max, vjust = -1, size = 4, label = c("b", "a")) +
+  labs(y = 'Ozone AQI Values') +
+  ylim(0,150)
+
+print(ozone.violin.plot)
 ```
 
 ## Linear Regression
@@ -58,15 +79,24 @@ Important components of the linear regression are the correlation and the R-squa
 
 For the NTL-LTER dataset, can we predict PM2.5 from Ozone?
 
-```{r}
+```{r linear regression}
 
-#Exercise 2: Run a linear regression PM2.5 by Ozone. Find the p-value and R-squared value. 
+#Exercise 2: Run a linear regression PM2.5 (y) by Ozone (x). Find the p-value and R-squared value. 
 
+PM.ozone.regression <- lm(EPAair$PM2.5 ~ EPAair$Ozone)
+summary(PM.ozone.regression)
 
+#P - value = 2.2e-16, R-squared value = 0.1314
 
 #Exercise 3: Build a scatterplot. Add a line and standard error for the linear regression. Add the regression equation to the plot
+PM.by.ozone <- 
+  ggplot(EPAair, aes(x = Ozone, y = PM2.5)) +
+  geom_point() +
+  geom_smooth(method = "lm", col = 'blue', se = FALSE)
+#se = false gets rid of the gray halo of standard error that surrounds your line of best fit
 
-
+print(PM.by.ozone)
+  
 
 ```
 
@@ -75,19 +105,29 @@ For the NTL-LTER dataset, can we predict PM2.5 from Ozone?
 
 What other variables can we add to improve model?
 
-```{r}
+```{r AIC}
 
 #Exercise 4: Build correlation plots and identify more possible explanatory variables to add to the regression.
+library(corrplot)
+EPAair.subset <- 
+  EPAair %>%
+  select(mean_Lat:Ozone) %>%
+  drop_na()
+#you cannot have NAs when trying to compute correlation
 
-
-
+EPAairCorr <- cor(EPAair.subset)
+corrplot.mixed(EPAairCorr, upper = "ellipse")
+#EPAaircorr creates a matrix (table)
 
 #Exercise 5: Choose a model by AIC in a Stepwise Algorithm. Do the results from AIC match the variables you selected on Exercise 4?
 
-
-
+Ozone.ALL <- lm(data=EPAair.subset, PM2.5 ~ Ozone + Year + Month + mean_Lat + mean_Lng)
+summary(Ozone.ALL)
+step(Ozone.ALL)
 
 #Exercise 6: Run another regression using the variables selected on Exercise 6. Compare r-squared value with the one from Exercise 2. 
+Ozone.best <- lm(data=EPAair.subset, PM2.5 ~ Ozone + Month + mean_Lat + mean_Lng)
+summary(Ozone.best)
 
 ```
 
