@@ -67,19 +67,51 @@ See: <https://rmarkdown.rstudio.com> and class recording.
 
 Create a table below that details the example datasets we have been using in class. The first column should contain the names of the datasets and the second column should include some relevant information about the datasets. (Hint: use the cheat sheets to figure out how to make a table in Rmd)
 
+Dataset Name  | Adjective
+------------- | -------------
+LTER Lakes.   | Fine
+EPA Air       | Also Fine
+
 
 ## R CHUNK EDITING CHALLENGE
 
 ### Installing packages
 
 Create an R chunk below that installs the package `knitr`. Instead of commenting out the code, customize the chunk options such that the code is not evaluated (i.e., not run).
+```{r install, eval=FALSE, include=FALSE}
+install.packages("knitr")
+```
+
 
 ### Setup
 
 Create an R chunk below called "setup" that loads the packages `tidyverse`, `lubridate`, `here`, and `knitr`, and sets a ggplot theme. Remember that you need to disable R throwing a message, which contains a check mark that cannot be knitted.
+```{r setup}
+knitr::opts_chunk$set(include = FALSE, message = FALSE)
+library(tidyverse)
+library(lubridate)
+library(here)
+library(knitr)
+
+mytheme <- theme_classic(base_size = 14) +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "top", legend.title = element_text(
+      color='purple'))
+theme_set(mytheme)
+```
+
 
 
 In a new code chunk named "load data", load the NTL-LTER_Lake_Nutrients_Raw dataset, convert dates, display the head of the dataset, and set the date column to a date format.Customize the chunk options such that the code is run but is not displayed in the knitted document. The output, however, should be displayed.
+```{r load data, echo=FALSE}
+
+LTER.Nutrients.Data <- read.csv(here("Data/Raw/NTL-LTER_Lake_Nutrients_Raw.csv"), stringsAsFactors = TRUE)
+
+LTER.Nutrients.Data$sampledate <- as.Date(LTER.Nutrients.Data$sampledate, format = "%m/%d/%y")
+
+head(LTER.Nutrients.Data)
+
+```
 
 
 ### Data Exploration, Wrangling, and Visualization
@@ -90,7 +122,22 @@ Create an R chunk below to create a processed dataset do the following operation
 -   Include only surface samples (depth = 0 m)
 -   Drop rows with missing data
 
+```{r processing}
+
+LTER.Nutrients.Processed <- LTER.Nutrients.Data %>%
+  select(-lakeid, -depth_id, -comments) %>%
+  filter(depth == 0) %>%
+  drop_na() 
+  
+```
+
 Create a second R chunk to create a summary dataset with the mean, minimum, maximum, and standard deviation of total nitrogen concentrations for each lake. Create a second summary dataset that is identical except that it evaluates total phosphorus. Customize the chunk options such that the code is run but not displayed in the final document.
+
+```{r summary dataset}
+
+
+```
+
 
 Create a third R chunk that uses the function `kable` in the knitr package to display two tables: one for the summary dataframe for total N and one for the summary dataframe of total P. Use the `caption = " "` code within that function to title your tables. Customize the chunk options such that the final table is displayed but not the code used to generate the table.
 
