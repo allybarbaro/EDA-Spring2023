@@ -133,6 +133,9 @@ head(huc8_sf)
 #View the data as a map, colored by the acreage in each
 mapView(huc8_sf, zcol = "ACRES")
 
+ggplot() +
+  geom_sf(data = huc8_sf, aes(fill = ACRES)) +
+  scale_fill_distiller(palette = "YlOrRd")
 
 ```
 
@@ -147,8 +150,13 @@ upper_neuse_sf <- st_read('./Data/Spatial/NCHUC8.shp') %>%
 
 
 #Create a map
-mapview(upper_neuse_sf, col.regions = "orange") +
-  mapview(huc8_sf, col.regions = "purple")
+mapview(huc8_sf, col.regions = "orange") +
+  mapview(upper_neuse_sf, col.regions = "purple", alpha = 1)
+
+ggplot() +
+  geom_sf(data = huc8_sf, fill = "purple", color = "gray") +
+  geom_sf(data = upper_neuse_sf, fill = "orange", alpha = 1)
+  
 
 
 ```
@@ -190,7 +198,7 @@ nc_powerplants_sf <- nc_powerplants_sf %>%
 
 # Examine counts by fuel type
 ggplot(nc_powerplants_sf) + 
-  geom_sf(aes(color = PRIM_FUEL)) 
+  geom_sf(aes(color = PRIM_FUEL))
 
 ```
 
@@ -253,6 +261,8 @@ wind_raw <- read.csv('https://raw.githubusercontent.com/ENV859/EnviroAtlasData/m
   group_by(HUC_8) %>% 
   summarize(SumWindEnergy = sum(AvgWindEnergy))
   
+#colClasses for when we have a numeric column we dont want to treat as numbers (aka want it to be a factor or character)
+
 #Join to HUC_8 features
 huc8_sf_join = merge(x = huc8_sf,
                      y = wind_raw,
@@ -395,6 +405,12 @@ final_the_hucs <- huc8_sf_utm %>%
   st_intersection(the_triangle)
 
 mapview(final_the_hucs) + mapview(the_triangle, alpha.regions = 0, color = 'red')
+
+ggplot()+
+  geom_sf(data = the_triangle, fill = "purple") +
+  geom_sf(data = final_the_hucs)
+#this is not fully right aesthetically ^
+
 ```
 
 ## 3.3 Geometry manipulations
