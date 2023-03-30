@@ -199,7 +199,6 @@ Now we can examine where the flooding appears most acute by visualizing gage hei
 mapview(gage.height.location, zcol = "mean_gage_ht", 
         cex = "mean_gage_ht")
 
-
 ```
 
 ---
